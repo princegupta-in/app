@@ -25,21 +25,21 @@ export interface User extends Document {
     password: string,
     verifyCode: string,
     verifyCodeExpiry: Date,
-    isVerified:boolean,
+    isVerified: boolean,
     isAcceptingMessage: boolean,
     message: Message[]
 }
 
 const userSchema = new Schema<User>({
     username: { type: String, trim: true, unique: true, required: [true, "username is mandatory field"] },
-    email: { type: String,unique:true, required: [true, "email is mandatory field"], match:[/.+\@.+\..+/,"please use a valid email"] },
+    email: { type: String, unique: true, required: [true, "email is mandatory field"], match: [/.+\@.+\..+/, "please use a valid email"] },
     password: { type: String, required: [true, "Password is required"] },
     verifyCode: { type: String, required: [true, "verification code is required"] },
-    isVerified: { type: Boolean, default:false},
+    isVerified: { type: Boolean, default: false },
     isAcceptingMessage: { type: Boolean, required: true },
     message: [MessageSchema]
 })
 
 // exporting modles: cuz Next.js includes Edge Functions, hence if model already exist use that else create new
-const UserModel = (mongoose.models.User as mongoose.Model<User>)|| mongoose.model<User>("UserModel",userSchema)
+const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("UserModel", userSchema)
 export default UserModel
