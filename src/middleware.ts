@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request })
     //grap the url
     const url = request.nextUrl
+    console.log("⚡~middleware.ts~",url)
 
     //if user have token and wana to go to following routes, redirect them
     if (token && (url.pathname.startsWith("/sign-in") || url.pathname.startsWith("/sign-up") || url.pathname.startsWith("/verify") || url.pathname.startsWith("/"))) {
