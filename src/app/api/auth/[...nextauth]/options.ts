@@ -44,25 +44,6 @@ export const authOptions: NextAuthOptions = {
                 catch (error: any) {
                     throw new Error(error)
                 }
-                // You need to provide your own logic here that takes the credentials
-                // submitted and returns either a object representing a user or value
-                // that is false/null if the credentials are invalid.
-                // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-                // You can also use the `req` object to obtain additional parameters
-                // (i.e., the request IP address)
-                const res = await fetch("/your/endpoint", {
-                    method: 'POST',
-                    body: JSON.stringify(credentials),
-                    headers: { "Content-Type": "application/json" }
-                })
-                const user = await res.json()
-
-                // If no error and we have user data, return it
-                if (res.ok && user) {
-                    return user
-                }
-                // Return null if user data could not be retrieved
-                return null
             }
         })
     ],
@@ -74,6 +55,7 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async jwt({ token, user }) {
+            //injecting user info into token
             //if want to modify the payload of the token can do this way
             //under the hood this user is comming form the returned user in provider
             //modify the interface src/helpers/next-auth.d.ts
@@ -86,6 +68,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         async session({ session, token }) {
+            //injecting token info into session
             if (session.user) {
                 session.user._id = token._id
                 session.user.isVerified = token.isVerified
