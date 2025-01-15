@@ -14,7 +14,7 @@ const MessageSchema: Schema<Message> = new Schema({
     },
     createdAt: {
         type: Date,
-        reqired: [true, "created time required"],
+        required: [true, "created time required"],
         default: Date.now
     }
 })
@@ -41,5 +41,8 @@ const userSchema = new Schema<User>({
 })
 
 // exporting modles: cuz Next.js includes Edge Functions, hence if model already exist use that else create new
-const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("UserModel", userSchema)
+// const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("UserModel", userSchema)
+const UserModel = (mongoose.models.UserModel as mongoose.Model<User>) || mongoose.model<User>("UserModel", userSchema)
+// console.log("⚡~🚩doodh ka doodh and pani ka pani :) ~",mongoose.models)
+//the mistake was that i was searching for already existing model named User, but it should be UserModel as in mongoose.model("<name of model want to save as in db>",userSchema)
 export default UserModel

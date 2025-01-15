@@ -14,12 +14,12 @@ export async function GET(req: NextRequest) {
             username: searchParams.get("username")
         }
         //zod validation
-        // console.log("⚡~unique-username/route.ts~", usernameValidation.safeParse(queryParam))
-        const { success, data } = usernameValidation.safeParse(queryParam)
+        // console.log("⚡~unique-username/route.ts~", usernameValidation.safeParse(queryParam)) //this was the mistake {error: Expected string, received object}
+        const { success, data,error } = usernameValidation.safeParse(queryParam.username)
         if (!success) {
             return NextResponse.json({
                 success: false,
-                message: "Invalid query Parameters"
+                message: error.issues[0].message // i console logged to find how to get zod schema errors
             }, { status: 500 })
         }
         const { username }: any = data
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             success: true,
             message: "Username is available"
-        }, { status: 401 })
+        }, { status: 200 })
 
     } catch (error) {
         console.error("Error checking username", error)
